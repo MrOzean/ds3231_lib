@@ -78,16 +78,6 @@ int8_t ds3231_set_date_time(ds3231_dev *clock, ds3231_date_time *date_time)
     return res;
 }
 
-/*!
- * @brief Get time from target clock
- *
- * @param[in]  clock         : Pointer to ds3231 device
- * @param[out] date_time     : Pointer to ds3231_date_time struct in which data to be written
- *                            is stored.
- * @retval   0   -> Success.
- * @retval Non zero value -> Fail.
- *
- */
 int8_t ds3231_get_date_time(ds3231_dev *clock, ds3231_date_time *date_time)
 {
     uint8_t buff[7];
@@ -105,16 +95,7 @@ int8_t ds3231_get_date_time(ds3231_dev *clock, ds3231_date_time *date_time)
     return res;
 }
 
-/*!
- * @brief Get time from target clock
- *
- * @param[in]  clock         : Pointer to ds3231 device
- * @param[out] date_time     : Pointer to ds3231_date_time struct in which data to be written
- *                            is stored.
- * @retval   0   -> Success.
- * @retval Non zero value -> Fail.
- *
- */
+
 int8_t ds3231_set_alarm_1(ds3231_dev *clock, ds3231_alarm_1 *alarm)
 {
     uint8_t buff[4]; // buffer to write

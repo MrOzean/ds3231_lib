@@ -69,18 +69,17 @@ void init_gpio(void)
     gpio_isr_handler_add(ALARM_INPUT_PIN, alarm_isr_handler, NULL);
     // Create and start stats task
     xTaskCreate(alarm_intrr_task, "alarm_intrr_task", 4096, NULL, 10, &ISR);
-    // xTaskCreate(screen_updater_task2, "scr_upd", 4096, NULL, 10, &ISR);
 }
 
 // user defined i2c read using platform specific functions
-int8_t i2c_reg_read(uint8_t reg_addr, uint8_t *reg_data, uint32_t length, void *intf_ptr)
+int8_t i2c_reg_read(uint8_t reg_addr, uint8_t *reg_data, uint32_t length)
 {
     int8_t i2c_addr = *((int *)intf_ptr);
     int ret = i2c_master_write_read_device(I2C_MASTER_NUM, i2c_addr, &reg_addr, 1, reg_data, length, I2C_MASTER_TIMEOUT_MS);
     return ret;
 }
 // user defined i2c write using platform specific functions
-int8_t i2c_reg_write(uint8_t reg_addr, uint8_t *reg_data, uint32_t length, void *intf_ptr)
+int8_t i2c_reg_write(uint8_t reg_addr, uint8_t *reg_data, uint32_t length)
 {
     int8_t i2c_addr = *((int *)intf_ptr);
     uint8_t write_buf[length + 1];
@@ -112,23 +111,6 @@ void alarm_intrr_task(void *arg)
         ESP_LOGI("get data", "%d-%02d-%02d %02d:%02d:%02d, day of week: %d", clock_dt.year, clock_dt.month, clock_dt.date, clock_dt.hours, clock_dt.minutes, clock_dt.seconds, clock_dt.day_of_week);
         ds3231_reset_alarm_fired(&clock, ALARM_1);
     }
-}
-
-void init_display(void)
-{
-    display_dev.busy_pin = PIN_NUM_BUSY;
-    display_dev.clk_pin = PIN_NUM_CLK;
-    display_dev.cs_pin = PIN_NUM_CS;
-    display_dev.dc_pin = PIN_NUM_DC;
-    display_dev.mosi_pin = PIN_NUM_MOSI;
-    display_dev.reset_pin = PIN_NUM_RST;
-
-    display_dev.screen_buffer = &buff;
-
-    display_dev.gpio_read_fptr = gpio_read;
-    display_dev.gpio_write_fptr = gpio_write;
-    display_dev.delay_us_fptr = delay_us;
-    display_dev.spi_write_fptr = spi_write;
 }
 
 void init_clock()
